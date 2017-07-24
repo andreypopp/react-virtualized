@@ -31,6 +31,15 @@ import scrollbarSize from "dom-helpers/util/scrollbarSize";
 export const DEFAULT_SCROLLING_RESET_TIME_INTERVAL = 150;
 
 /**
+ * A renderer which renders nothing (by returning `null`).
+ *
+ * Note that we explicitly annotate this with a wider (than neccessary) type so
+ * that we can workaround a bug in flow related to `$Diff<A, B>`.
+ * See https://github.com/facebook/flow/issues/2508 for more info.
+ */
+const nullRender: () => React.Element<*> | null = () => null;
+
+/**
  * Controls whether the Grid updates the DOM element's scrollLeft/scrollTop based on the current state or just observes it.
  * This prevents Grid from interrupting mouse-wheel animations (see issue #2).
  */
@@ -264,7 +273,7 @@ export default class Grid extends PureComponent {
     estimatedColumnSize: 100,
     estimatedRowSize: 30,
     getScrollbarSize: scrollbarSize,
-    noContentRenderer: () => null,
+    noContentRenderer: nullRender,
     onScroll: ({}) => {},
     onScrollbarPresenceChange: () => {},
     onSectionRendered: ({}) => {},
